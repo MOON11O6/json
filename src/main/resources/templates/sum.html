@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xml:th="org.springframework-thymeleaf" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--@PathVariable-->
+<!--전체출력-->
+<!--<form action="/sum" method="post">-->
+<!--    <div class="sum" th:each="p : ${print}">-->
+<!--        <p th:text="${p.user_id+p.username+p.post_count}"></p>-->
+<!--    </div>-->
+<!--    <div th:if="${print == null}">-->
+<!--        <p>No data available for the specified ID.</p>-->
+<!--    </div>-->
+<!--    <a href="/sum">Back to List</a>-->
+<!--</form>-->
+
+<form action="/sum" method="get">
+    <label for="user_id">User ID:</label>
+    <input type="text" id="user_id" name="sum">
+    <button type="submit">불러오기</button>
+</form>
+<div>
+<h2>Result:</h2>
+    <p th:if="${print instanceof T(com.example.practice.PracticeEntity)}"
+       th:text="${print.user_id + ' ' + print.username + ' ' + print.post_count}">Result will be displayed here.</p>
+    <p th:unless="${print instanceof T(com.example.practice.PracticeEntity)}"
+       th:text="${print}">Result will be displayed here.</p>
+</div>
+</body>
+</html>
