@@ -7,14 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,12 +38,7 @@ public class PracticeService {
             e.printStackTrace();
         }
     }
-//    //post-count 값 총합
-//    public int calculateSum(){
-//        List<PracticeEntity> entities = practiceRepository.findAll();
-//        return entities.stream().mapToInt(PracticeEntity::getPost_count).sum();
-//
-//    }
-
-
+    public List<PracticeEntity> getEntitiesByUserIds(List<Long> userIds) {
+        return practiceRepository.findAllByUserIdIn(userIds);
+    }
 }

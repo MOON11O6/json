@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>금색결과</h1>
+
+<!-- 오류 메시지를 표시 -->
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- 결과 테이블을 표시 -->
+<table border="1" th:if="${entities != null}">
+    <thead>
+    <tr>
+        <th>유저 ID</th>
+        <th>유저이름</th>
+        <th>게시물 수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${entities}">
+        <td th:text="${entity.userId}"></td>
+        <td th:text="${entity.username}"></td>
+        <td th:text="${entity.postCount}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/search">검색창으로 돌아과기</a>
+</body>
+</html>

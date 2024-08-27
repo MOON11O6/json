@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,25 +65,36 @@ public class PracticeController {
         return "sum";
     }
 
-//    @GetMapping("/search")
-//    public String search(@RequestParam String userIds, Model model) {
-//        try {
-//            // userIds를 쉼표로 분리하여 List<Long>으로 변환
-//            List<Long> ids = Stream.of(userIds.split(","))
-//                    .map(String::trim)
-//                    .map(Long::parseLong)
-//                    .collect(Collectors.toList());
-//
-//            // 서비스 호출하여 결과 가져오기
-//            List<Map<String, Object>> results = PracticeService.getPostCountsByIds(ids);
-//
-//            // 모델에 결과 추가
-//            model.addAttribute("results", results);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        // 결과를 렌더링할 HTML 페이지로 이동
-//        return "searchResults";
-//    }
+    // 검색 페이지를 보여주는 메소드
+    @GetMapping("/search")
+    public String showSearchPage() {
+        return "search"; // Thymeleaf 템플릿 파일 이름 (search.html)
+    }
+
+    // 검색 결과를 Thymeleaf 템플릿으로 전달하는 메소드
+    @GetMapping("/search2")
+    public String getEntitiesByUserIds(@RequestParam(required = false) String ids, Model model) {
+        if (ids == null || ids.trim().isEmpty()) {
+            // ids 파라미터가 없거나 빈 문자열인 경우 처리
+            model.addAttribute("error", "Please provide at least one User ID.");
+            return "searchResults"; // 에러 메시지를 포함한 결과 페이지
+        }
+        List<Long> userIdList;
+        try {
+            userIdList = Stream.of(ids.split(","))
+                    .map(String::trim) // 공백 제거
+                    .map(Long::parseLong) // Long으로 변환
+                    .collect(Collectors.toList());
+        } catch (NumberFormatException e) {
+            // ID 변환 중 에러 발생 시 처리
+            model.addAttribute("error", "Invalid User ID format. Please enter valid numbers.");
+            return "searchResults"; // 에러 메시지를 포함한 결과 페이지
+        }
+
+        List<PracticeEntity> entities = practiceService.getEntitiesByUserIds(userIdList);
+
+        // Thymeleaf 템플릿에 데이터를 전달
+        model.addAttribute("entities", entities);
+        return "searchResults"; // Thymeleaf 템플릿 파일 이름 (searchResults.html)
+    }
 }
