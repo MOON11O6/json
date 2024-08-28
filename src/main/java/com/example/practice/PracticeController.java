@@ -90,11 +90,13 @@ public class PracticeController {
             model.addAttribute("error", "Invalid User ID format. Please enter valid numbers.");
             return "searchResults"; // 에러 메시지를 포함한 결과 페이지
         }
-
+        //입력받은 id값의 데이터들중 post_count의 합을 구함
         List<PracticeEntity> entities = practiceService.getEntitiesByUserIds(userIdList);
+        int totalPostCount = entities.stream().mapToInt(PracticeEntity::getPostCount).sum();
 
         // Thymeleaf 템플릿에 데이터를 전달
         model.addAttribute("entities", entities);
+        model.addAttribute("totalPostCount", totalPostCount);
         return "searchResults"; // Thymeleaf 템플릿 파일 이름 (searchResults.html)
     }
 }

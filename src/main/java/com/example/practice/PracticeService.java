@@ -41,4 +41,8 @@ public class PracticeService {
     public List<PracticeEntity> getEntitiesByUserIds(List<Long> userIds) {
         return practiceRepository.findAllByUserIdIn(userIds);
     }
+    public List<PracticeEntity> getAllUsers() {
+        return practiceRepository.findAll();
+    }
 }
+
